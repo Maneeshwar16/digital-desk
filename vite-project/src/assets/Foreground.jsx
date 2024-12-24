@@ -1,7 +1,13 @@
 import React, { useState, useRef } from 'react';
+import { useLocation } from "react-router-dom";
 import Card from './Card';
+import Background from './Background';
+import UsernameCard from './UsernameCard';
+import { motion } from "framer-motion";
 
 const Foreground = () => {
+  const location = useLocation();
+  const userName = location.state?.userName || "User";
   const ref = useRef(null);  // Fixed typo: UseRef -> useRef
   const [todoList, setTodoList] = useState([
     { id: 1, taskName: "Buy Groceries", taskDescription: "Purchase vegetables, fruits, and dairy products.", done: false },
@@ -53,7 +59,8 @@ const Foreground = () => {
   };
 
   return (
-    <div ref={ref} className="fixed top-0 left-0 z-[3] w-full h-full bg-sky-800/20 p-20 flex flex-wrap gap-5">
+    <div ref={ref} className="fixed top-0 left-0 z-[3] w-full h-full  p-20 flex flex-wrap gap-5 mt-2 flex space-x-4">
+       <h1  className="text-3xl text-white font-bold mb-6">Hello, {userName}! <br/>Here are your tasks</h1>
       {todoList.map((item) => (
         <Card
           key={item.id}
@@ -66,6 +73,7 @@ const Foreground = () => {
       ))}
 
       {showAddTask && (
+        <div>
         <div className="fixed inset-0 flex items-center justify-center bg-gray-900/50 rounded-2xl ">
           <div className="bg-gray-800 text-white p-8 rounded shadow-lg border-red opacity-80  ">
             <h3 className="text-lg font-bold mb-4">Add New Task</h3>
@@ -102,19 +110,20 @@ const Foreground = () => {
             </div>
           </div>
         </div>
+        </div>
       )}
 
       {showDeleteConfirm && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-900/50">
+        <motion.div className="fixed inset-0 flex items-center justify-center bg-gray-900/50">
           <div className="bg-gray-800 text-white p-8 rounded shadow-lg">
             <h3 className="text-lg font-bold mb-4">Confirm Deletion</h3>
             <p>Are you sure you want to delete this task?</p>
             <div className="flex justify-between mt-4">
               <button onClick={confirmDelete} className="bg-red-600 px-4 py-2 rounded">Yes</button>
               <button onClick={cancelDelete} className="bg-green-600 px-4 py-2 rounded">No</button>
-            </div>
+            </div>.
           </div>
-        </div>
+        </motion.div>
       )}
     </div>
   );
