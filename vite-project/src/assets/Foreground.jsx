@@ -66,8 +66,8 @@ const Foreground = () => {
       ))}
 
       {showAddTask && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-900/50">
-          <div className="bg-gray-800 text-white p-8 rounded shadow-lg">
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-900/50 rounded-2xl ">
+          <div className="bg-gray-800 text-white p-8 rounded shadow-lg border-red opacity-80  ">
             <h3 className="text-lg font-bold mb-4">Add New Task</h3>
             <input
               type="text"
@@ -80,7 +80,7 @@ const Foreground = () => {
             />
             <textarea
               placeholder="Task Description"
-              className="w-full mb-4 p-2 bg-gray-700 rounded"
+              className="w-full mb-4 p-2 bg-gray-700 rounded-4xl"
               value={newTask.taskDescription}
               onChange={(e) =>
                 setNewTask({ ...newTask, taskDescription: e.target.value })

@@ -4,9 +4,9 @@ import { IoCheckmarkDoneCircleSharp } from "react-icons/io5";
 import { IoIosAddCircle } from "react-icons/io";
 import { MdDeleteForever } from "react-icons/md";
 import { IoIosDoneAll } from "react-icons/io";
-import{ motion } from "framer-motion"
+import { motion } from "framer-motion";
 
-const Card = ({ data, onAdd, onDelete,reference}) => {
+const Card = ({ data, onAdd, onDelete, reference }) => {
   const [isDone, setIsDone] = useState(false);
 
   const handleDoneClick = () => {
@@ -14,7 +14,9 @@ const Card = ({ data, onAdd, onDelete,reference}) => {
   };
 
   return (
-    <motion.div  drag dragConstraints={reference}
+    <motion.div
+      drag
+      dragConstraints={reference} // Corrected the typo here
       className="relative w-60 h-80 bg-zinc-900 rounded-[10%] px-5 py-10 overflow-hidden justify-center text-white"
     >
       <div className="flex justify-between items-center mb-4">
