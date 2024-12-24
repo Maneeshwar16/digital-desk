@@ -117,7 +117,7 @@ const Foreground = () => {
         <motion.div className="fixed inset-0 flex items-center justify-center bg-gray-900/50">
           <div className="bg-gray-800 text-white p-8 rounded shadow-lg">
             <h3 className="text-lg font-bold mb-4">Confirm Deletion</h3>
-            <p>Are you sure you want to delete this task?</p>
+            <p>Are you sure you have completed this task</p>
             <div className="flex justify-between mt-4">
               <button onClick={confirmDelete} className="bg-red-600 px-4 py-2 rounded">Yes</button>
               <button onClick={cancelDelete} className="bg-green-600 px-4 py-2 rounded">No</button>
