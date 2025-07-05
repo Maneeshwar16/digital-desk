@@ -45,7 +45,7 @@ const Card = ({ data, onAdd, onDelete, reference }) => {
             )}
           </motion.button>
           <motion.button
-          whileTap={{ scale: 0.9, rotate: 3 }}
+          whileTap={{ scale: 10, rotate: 3 }}
             onClick={() => onDelete(data.id)}
             className="h-10 w-10 flex justify-center items-center"
           >
