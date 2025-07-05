@@ -6,21 +6,23 @@ import { MdDeleteForever } from "react-icons/md";
 import { IoIosDoneAll } from "react-icons/io";
 import { motion } from "framer-motion";
 
-const Card = ({ data, onAdd, onDelete, reference }) => {
-  const [isDone, setIsDone] = useState(false);
-
+const Card = ({ data, onAdd, onDelete, onMarkDone, reference, highlight }) => {
   const handleDoneClick = () => {
-    setIsDone(!isDone);
+    onMarkDone(data._id);
   };
 
   return (
     <motion.div
-    whileHover={{ scale: 1.2 }}
-    onHoverStart={event => {}}
-    onHoverEnd={event => {}}
+      data-type={data.type}
+      initial={highlight ? { scale: 1.2, boxShadow: '0 0 0 4px #facc15' } : false}
+      animate={highlight ? { scale: [1.2, 1], boxShadow: ['0 0 0 4px #facc15', '0 0 0 0px #facc15'] } : {}}
+      transition={highlight ? { duration: 1.2, ease: 'easeOut' } : {}}
+      whileHover={{ scale: 1.2 }}
+      onHoverStart={event => {}}
+      onHoverEnd={event => {}}
       drag
-      dragConstraints={reference} // Corrected the typo here
-      className="relative w-60 h-80 bg-zinc-900 rounded-[10%] px-5 py-10 overflow-hidden justify-center text-white mt-24 opacity-80 "
+      dragConstraints={reference}
+      className={`relative w-60 h-80 bg-zinc-900 rounded-[10%] px-5 py-10 overflow-hidden justify-center text-white mt-24 opacity-80 ${highlight ? 'ring-4 ring-yellow-400' : ''}`}
     >
       <div className="flex justify-between items-center mb-4">
         <FaTasks className="text-[25px]" />
@@ -38,7 +40,7 @@ const Card = ({ data, onAdd, onDelete, reference }) => {
             onClick={handleDoneClick}
             className="h-10 w-10 flex justify-center items-center"
           >
-            {isDone ? (
+            {data.done ? (
               <IoCheckmarkDoneCircleSharp className="text-5xl text-green-500" />
             ) : (
               <IoIosDoneAll className="text-5xl text-white" />
@@ -46,10 +48,10 @@ const Card = ({ data, onAdd, onDelete, reference }) => {
           </motion.button>
           <motion.button
           whileTap={{ scale: 10, rotate: 3 }}
-            onClick={() => onDelete(data.id)}
+            onClick={() => onDelete(data._id)}
             className="h-10 w-10 flex justify-center items-center"
           >
-            {isDone ?(
+            {data.done ?(
               <MdDeleteForever className="text-5xl text-red-500" />)
               :(
                 <MdDeleteForever className="text-5xl text-white" />

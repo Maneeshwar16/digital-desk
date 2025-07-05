@@ -1,0 +1,19 @@
+{
+  "name": "todo-app",
+  "version": "1.0.0",
+  "description": "Interactive Todo App with Frontend and Backend",
+  "main": "server/index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "cd server; npm run dev",
+    "client": "cd vite-project; npm run dev",
+    "install-all": "npm install; cd server; npm install; cd ../vite-project; npm install",
+    "build": "cd vite-project; npm run build"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "keywords": ["todo", "react", "nodejs", "express", "mongodb"],
+  "author": "",
+  "license": "MIT"
+} 
