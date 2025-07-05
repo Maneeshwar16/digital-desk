@@ -43,7 +43,8 @@
 
 @font-face {
   font-family: 'InterDisplay';
-  src: url('/fonts/inter-display/ttf/InterDisplay-Regular.ttf') format('truetype');
+  src: url('/fonts/InterDisplay-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
+
