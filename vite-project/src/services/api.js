@@ -2,19 +2,16 @@
 
 import axios from 'axios';
 
-// ✅ Vercel API base path (no external domain needed)
-const API_BASE_URL = '/api';
+const API_BASE_URL = 'https://digital-desk-2.onrender.com/api';
 
-// 🔧 Create Axios instance
 const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
-  withCredentials: false, // set to true only if using cookies/session
+  withCredentials: false,
 });
 
-// 🛡️ Attach token to all requests (JWT-style auth)
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
@@ -26,20 +23,12 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-//
-// ================================
-// 📦 Auth APIs (Vercel API Routes)
-// ================================
 export const authAPI = {
   register: (userData) => api.post('/users/register', userData),
   login: (userData) => api.post('/users/login', userData),
   getProfile: () => api.get('/users/profile'),
 };
 
-//
-// ================================
-// ✅ Todo APIs (Vercel API Routes)
-// ================================
 export const todoAPI = {
   getAll: () => api.get('/todos'),
   create: (todoData) => api.post('/todos', todoData),
