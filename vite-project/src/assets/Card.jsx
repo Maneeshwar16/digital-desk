@@ -16,8 +16,8 @@ const Card = ({ data, onAdd, onDelete, onMarkDone, reference, highlight }) => {
       data-type={data.type}
       initial={highlight ? { scale: 1.2, boxShadow: '0 0 0 4px #facc15' } : false}
       animate={highlight ? { scale: [1.2, 1], boxShadow: ['0 0 0 4px #facc15', '0 0 0 0px #facc15'] } : {}}
-      transition={highlight ? { duration: 1.2, ease: 'easeOut' } : {}}
-      whileHover={{ scale: 1.2 }}
+      transition={highlight ? { duration: 0.6, ease: 'easeOut' } : { type: 'spring', stiffness: 400, damping: 20, duration: 0.15 }}
+      whileHover={{ scale: 1.08 }}
       onHoverStart={event => {}}
       onHoverEnd={event => {}}
       drag
