@@ -122,13 +122,8 @@ const Foreground = () => {
 
   // Delete Task
   const handleDeleteTask = (id) => {
-    if (user && user.guest) {
-      setTodoList(todoList.filter((task) => task._id !== id));
-      setShowDeleteConfirm(false);
-    } else {
-      setTaskToDelete(id);
-      setShowDeleteConfirm(true);
-    }
+    setTaskToDelete(id);
+    setShowDeleteConfirm(true);
   };
 
   const confirmDelete = async () => {
@@ -141,7 +136,7 @@ const Foreground = () => {
         setTodoList(todoList.filter((task) => task._id !== taskToDelete));
         setShowDeleteConfirm(false);
       } catch (error) {
-        alert("Failed to delete task!");
+        // alert("Failed to delete task!");
         console.error('Error deleting todo:', error);
       }
     }
@@ -324,11 +319,10 @@ const Foreground = () => {
       {showDeleteConfirm && (
         <motion.div className="fixed inset-0 flex items-center justify-center bg-gray-900/50">
           <div className="bg-gray-800 text-white p-8 rounded shadow-lg">
-            <h3 className="text-lg font-bold mb-4">Confirm Deletion</h3>
-            <p>Are you sure you want to delete this task?</p>
+            <h3 className="text-lg font-bold mb-4">Do you want to delete?</h3>
             <div className="flex justify-between mt-4">
-              <button onClick={confirmDelete} className="bg-red-600 px-4 py-2 rounded">Yes</button>
-              <button onClick={cancelDelete} className="bg-green-600 px-4 py-2 rounded">No</button>
+              <button onClick={confirmDelete} className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded font-semibold">Confirm</button>
+              <button onClick={cancelDelete} className="bg-gray-600 hover:bg-gray-700 px-4 py-2 rounded font-semibold">Cancel</button>
             </div>
           </div>
         </motion.div>

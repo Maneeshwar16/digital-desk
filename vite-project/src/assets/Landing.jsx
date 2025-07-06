@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaTasks, FaRegFileAlt, FaYoutube, FaImage, FaUserSecret } from 'react-icons/fa';
 import { motion } from 'framer-motion';
+import { useAuth } from '../context/AuthContext';
 
 const features = [
   { icon: <FaTasks className="text-blue-400 text-3xl" />, label: 'Tasks', desc: 'Organize your todos and reminders.', color: 'blue', type: 'task' },
@@ -22,9 +23,11 @@ const colorMap = {
 const Landing = () => {
   const navigate = useNavigate();
   const dragRef = useRef(null);
+  const { setUser } = useAuth();
 
   const handleCardClick = (type) => {
     if (type === 'guest') {
+      setUser({ username: 'Guest', guest: true });
       navigate('/foreground', { state: { guest: true, focusType: 'task' } });
       return;
     }
