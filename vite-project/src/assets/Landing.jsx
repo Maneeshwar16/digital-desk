@@ -26,6 +26,7 @@ const Landing = () => {
   const { setUser } = useAuth();
 
   const handleCardClick = (type) => {
+    console.log('Card clicked:', type);
     if (type === 'guest') {
       setUser({ username: 'Guest', guest: true });
       navigate('/foreground', { state: { guest: true, focusType: 'task' } });
