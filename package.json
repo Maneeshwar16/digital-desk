@@ -13,7 +13,16 @@
   "devDependencies": {
     "concurrently": "^8.2.2"
   },
-  "keywords": ["todo", "react", "nodejs", "express", "mongodb"],
+  "keywords": [
+    "todo",
+    "react",
+    "nodejs",
+    "express",
+    "mongodb"
+  ],
   "author": "",
-  "license": "MIT"
-} 
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5"
+  }
+}

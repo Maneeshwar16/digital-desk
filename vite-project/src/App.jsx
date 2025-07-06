@@ -4,7 +4,6 @@ import Background from './assets/Background';
 import Login from './assets/Login';
 import Foreground from './assets/Foreground';
 import './App.css';
-import './index.css';
 import About from './assets/About';
 import Contact from './assets/Contact';
 import Landing from './assets/Landing';
