@@ -6,7 +6,7 @@ import { useAuth } from '../context/AuthContext';
 import { todoAPI } from '../services/api';
 import { FaTasks, FaRegFileAlt, FaYoutube, FaImage } from 'react-icons/fa';
 
-const Foreground = () => {
+const Foreground = () => {  
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -23,6 +23,33 @@ const Foreground = () => {
   
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('all');
+
+  // --- START OF FIX ---
+  // This function formats the username for display
+  const getDisplayUsername = () => {
+    // Start with a default in case there is no user
+    if (!user || !user.username) {
+      return 'Guest';
+    }
+
+    // Take the username (e.g., "sai123@gmail.com")
+    let namePart = user.username;
+
+    // If it's an email, get the part before the '@' symbol
+    if (namePart.includes('@')) {
+      namePart = namePart.split('@')[0]; // Becomes "sai123"
+    }
+
+    // Use a regular expression to remove any numbers from the end of the string
+    namePart = namePart.replace(/\d+$/, ''); // Becomes "sai"
+
+    // Capitalize the first letter for a nice greeting
+    return namePart.charAt(0).toUpperCase() + namePart.slice(1);
+  };
+
+  const displayUsername = getDisplayUsername();
+  // --- END OF FIX ---
+
 
   // Load todos on component mount
   useEffect(() => {
@@ -218,7 +245,6 @@ const Foreground = () => {
   const filteredTodos = todoList.filter(todo => {
     const matchesSearch = (todo.taskName?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
                          (todo.taskDescription?.toLowerCase() || '').includes(searchTerm.toLowerCase());
-    // FIX IS HERE: Made the type comparison case-insensitive
     const matchesType = filterType === 'all' || (todo.type?.toLowerCase() || '') === filterType;
     return matchesSearch && matchesType;
   });
@@ -228,7 +254,8 @@ const Foreground = () => {
       <div className="w-full flex justify-between items-center mb-6">
         <div>
           <h1 className="text-3xl text-white font-bold">
-            Hello, {user?.name}! <br />Here is your digital desk
+            {/* USE THE FORMATTED USERNAME HERE */}
+            Hello, {displayUsername}! <br />Here is your digital desk
           </h1>
           <div className="mt-4 flex items-center space-x-4">
             <input
