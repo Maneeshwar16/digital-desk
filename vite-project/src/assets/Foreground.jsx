@@ -60,7 +60,12 @@ const Foreground = () => {
     try {
       setLoading(true);
       const response = await todoAPI.getAll();
-      setTodoList(response.data);
+      setTodoList(response.data.results.map(todo => ({
+        ...todo,
+        _id: todo.objectId,
+        taskName: todo.taskName || todo.content,
+        taskDescription: todo.taskDescription || '',
+      })));
     } catch (error) {
       setError('Failed to load todos');
       console.error('Error fetching todos:', error);
@@ -109,8 +114,18 @@ const Foreground = () => {
       setShowAddTask(false);
     } else {
       try {
-        const response = await todoAPI.create(payload);
-        setTodoList([response.data, ...todoList]);
+        const response = await todoAPI.create({
+          ...payload,
+          userId: user.id,
+          done: false
+        });
+        const newTodo = {
+          ...response.data,
+          _id: response.data.objectId,
+          taskName: response.data.taskName || response.data.content,
+          taskDescription: response.data.taskDescription || '',
+        };
+        setTodoList([newTodo, ...todoList]);
         setNewTask({ type: 'task', taskName: '', taskDescription: '', content: '', imageUrl: '' });
         setShowAddTask(false);
       } catch (error) {
@@ -132,11 +147,15 @@ const Foreground = () => {
       setShowDeleteConfirm(false);
     } else {
       try {
-        await todoAPI.delete(taskToDelete);
-        setTodoList(todoList.filter((task) => task._id !== taskToDelete));
+        // For Parse Server, we need to use the objectId
+        const taskObjectId = todoList.find(task => task._id === taskToDelete)?.objectId;
+        if (taskObjectId) {
+          await todoAPI.delete(taskObjectId);
+          setTodoList(todoList.filter((task) => task._id !== taskToDelete));
+        }
         setShowDeleteConfirm(false);
       } catch (error) {
-        // alert("Failed to delete task!");
+        alert("Failed to delete task!");
         console.error('Error deleting todo:', error);
       }
     }
@@ -155,10 +174,19 @@ const Foreground = () => {
       ));
     } else {
       try {
-        const response = await todoAPI.toggle(id);
-        setTodoList(todoList.map((task) =>
-          task._id === id ? response.data : task
-        ));
+        const task = todoList.find(t => t._id === id);
+        if (task) {
+          const response = await todoAPI.toggle(task.objectId, !task.done);
+          const updatedTask = {
+            ...response.data,
+            _id: response.data.objectId,
+            taskName: response.data.taskName || response.data.content,
+            taskDescription: response.data.taskDescription || '',
+          };
+          setTodoList(todoList.map((t) =>
+            t._id === id ? updatedTask : t
+          ));
+        }
       } catch (error) {
         alert("Failed to update task!");
         console.error('Error updating todo:', error);

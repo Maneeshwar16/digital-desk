@@ -18,8 +18,8 @@ export const AuthProvider = ({ children }) => {
 
   // Check if user is logged in on app start
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
+    const sessionToken = localStorage.getItem('sessionToken');
+    if (sessionToken) {
       checkAuthStatus();
     } else {
       setLoading(false);
@@ -29,9 +29,9 @@ export const AuthProvider = ({ children }) => {
   const checkAuthStatus = async () => {
     try {
       const response = await authAPI.getProfile();
-      setUser(response.data.user);
+      setUser(response.data);
     } catch (error) {
-      localStorage.removeItem('token');
+      localStorage.removeItem('sessionToken');
     } finally {
       setLoading(false);
     }
@@ -41,13 +41,13 @@ export const AuthProvider = ({ children }) => {
     try {
       setError(null);
       const response = await authAPI.login({ username, password });
-      const { token, user } = response.data;
+      const { sessionToken, objectId, username: userName } = response.data;
       
-      localStorage.setItem('token', token);
-      setUser(user);
+      localStorage.setItem('sessionToken', sessionToken);
+      setUser({ id: objectId, username: userName });
       return { success: true };
     } catch (error) {
-      const message = error.response?.data?.message || 'Login failed';
+      const message = error.response?.data?.error || 'Login failed';
       setError(message);
       return { success: false, error: message };
     }
@@ -57,20 +57,20 @@ export const AuthProvider = ({ children }) => {
     try {
       setError(null);
       const response = await authAPI.register({ username, password });
-      const { token, user } = response.data;
+      const { sessionToken, objectId } = response.data;
       
-      localStorage.setItem('token', token);
-      setUser(user);
+      localStorage.setItem('sessionToken', sessionToken);
+      setUser({ id: objectId, username });
       return { success: true };
     } catch (error) {
-      const message = error.response?.data?.message || 'Registration failed';
+      const message = error.response?.data?.error || 'Registration failed';
       setError(message);
       return { success: false, error: message };
     }
   };
 
   const logout = () => {
-    localStorage.removeItem('token');
+    localStorage.removeItem('sessionToken');
     setUser(null);
     setError(null);
   };
