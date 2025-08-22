@@ -218,8 +218,18 @@ const Foreground = () => {
     <div ref={ref} className="fixed top-0 left-0 z-10 w-full h-full p-20 flex flex-wrap gap-5 mt-4 flex space-x-4 overflow-y-auto">
       <div className="w-full flex justify-between items-center mb-6">
         <h1 className="text-3xl text-white font-bold">
-          Hello, {user?.username}! <br />Here is your digital desk
+          Hello, {user?.username?.split('@')[0] || 'Guest'}! <br />
+          <span className="text-2xl text-gray-300">Here is your digital desk</span>
         </h1>
+        <div className="flex items-center gap-4">
+          <span className="text-gray-300">{todoList.length} items</span>
+          <button
+            onClick={handleLogout}
+            className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded text-white font-semibold transition-colors duration-200"
+          >
+            Logout
+          </button>
+        </div>
         <button
           onClick={handleLogout}
           className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded text-white font-semibold"
@@ -243,12 +253,47 @@ const Foreground = () => {
         </div>
       )}
       
+      <div className="w-full flex gap-4 mb-6">
+        <button
+          onClick={() => setHighlightType(null)}
+          className={`px-4 py-2 rounded ${!highlightType ? 'bg-blue-600' : 'bg-gray-700'} text-white transition-colors duration-200`}
+        >
+          All
+        </button>
+        <button
+          onClick={() => setHighlightType('task')}
+          className={`px-4 py-2 rounded ${highlightType === 'task' ? 'bg-blue-600' : 'bg-gray-700'} text-white transition-colors duration-200`}
+        >
+          Tasks
+        </button>
+        <button
+          onClick={() => setHighlightType('article')}
+          className={`px-4 py-2 rounded ${highlightType === 'article' ? 'bg-blue-600' : 'bg-gray-700'} text-white transition-colors duration-200`}
+        >
+          Articles
+        </button>
+        <button
+          onClick={() => setHighlightType('youtube')}
+          className={`px-4 py-2 rounded ${highlightType === 'youtube' ? 'bg-blue-600' : 'bg-gray-700'} text-white transition-colors duration-200`}
+        >
+          YouTube
+        </button>
+        <button
+          onClick={() => setHighlightType('image')}
+          className={`px-4 py-2 rounded ${highlightType === 'image' ? 'bg-blue-600' : 'bg-gray-700'} text-white transition-colors duration-200`}
+        >
+          Images
+        </button>
+      </div>
+
       {todoList.length === 0 ? (
         <div className="w-full text-center text-white text-xl">
           No items yet. Click the + button to add your first item!
         </div>
       ) : (
-        todoList.map((item) => (
+        todoList
+          .filter(item => !highlightType || item.type === highlightType)
+          .map((item) => (
           <Card
             key={item._id}
             data={item}

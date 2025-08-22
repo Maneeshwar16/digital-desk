@@ -31,7 +31,31 @@ const Card = ({ data, onAdd, onDelete, onMarkDone, reference, highlight }) => {
         </motion.button>
       </div>
       <p className="text-white text-xl font-bold mb-3">{data.taskName}</p>
-      <p className="text-white text-sm mb-6">{data.taskDescription}</p>
+      {data.type === 'youtube' || data.type === 'article' ? (
+        <a 
+          href={data.taskDescription}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-400 hover:text-blue-300 underline text-sm mb-6 break-words block"
+        >
+          {data.taskDescription}
+        </a>
+      ) : (
+        <p className="text-white text-sm mb-6 break-words">{data.taskDescription}</p>
+      )}
+      {data.type === 'youtube' && (
+        <div className="mb-4">
+          <iframe
+            width="100%"
+            height="120"
+            src={data.taskDescription.replace('watch?v=', 'embed/')}
+            title="YouTube video player"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          ></iframe>
+        </div>
+      )}
       <div className="footer absolute bottom-0 w-full left-0">
         <div className="tag w-full py-4 bg-blue-600 flex items-center justify-center text-white space-x-10">
           <motion.button
