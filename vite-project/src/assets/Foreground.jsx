@@ -215,21 +215,12 @@ const Foreground = () => {
   }
 
   return (
-    <div ref={ref} className="fixed top-0 left-0 z-10 w-full h-full p-20 flex flex-wrap gap-5 mt-4 flex space-x-4 overflow-y-auto">
+    <div ref={ref} className="fixed top-0 left-0 z-10 w-full h-full p-20 flex flex-wrap gap-5 mt-4 overflow-y-auto">
       <div className="w-full flex justify-between items-center mb-6">
         <h1 className="text-3xl text-white font-bold">
           Hello, {user?.username?.split('@')[0] || 'Guest'}! <br />
           <span className="text-2xl text-gray-300">Here is your digital desk</span>
         </h1>
-        <div className="flex items-center gap-4">
-          <span className="text-gray-300">{todoList.length} items</span>
-          <button
-            onClick={handleLogout}
-            className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded text-white font-semibold transition-colors duration-200"
-          >
-            Logout
-          </button>
-        </div>
         <button
           onClick={handleLogout}
           className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded text-white font-semibold"

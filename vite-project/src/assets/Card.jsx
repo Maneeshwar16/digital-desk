@@ -13,54 +13,28 @@ const Card = ({ data, onAdd, onDelete, onMarkDone, reference, highlight }) => {
 
   return (
     <motion.div
-      data-type={data.type}
-      initial={highlight ? { scale: 1.2, boxShadow: '0 0 0 4px #facc15' } : false}
-      animate={highlight ? { scale: [1.2, 1], boxShadow: ['0 0 0 4px #facc15', '0 0 0 0px #facc15'] } : {}}
-      transition={highlight ? { duration: 0.6, ease: 'easeOut' } : { type: 'spring', stiffness: 400, damping: 20, duration: 0.15 }}
-      whileHover={{ scale: 1.08 }}
-      onHoverStart={event => {}}
-      onHoverEnd={event => {}}
       drag
       dragConstraints={reference}
-      className={`relative w-60 h-80 bg-zinc-900 rounded-[10%] px-5 py-10 overflow-hidden justify-center text-white mt-24 opacity-80 ${highlight ? 'ring-4 ring-yellow-400' : ''}`}
+      className="relative w-60 h-80 bg-zinc-900 rounded-[10%] px-5 py-10 overflow-hidden justify-center text-white mt-24 opacity-80"
     >
       <div className="flex justify-between items-center mb-4">
         <FaTasks className="text-[25px]" />
-        <motion.button onClick={onAdd} whileHover={{ scale: 2 }}>
+        <motion.button onClick={onAdd}>
           <IoIosAddCircle className="text-4xl" />
         </motion.button>
       </div>
       <p className="text-white text-xl font-bold mb-3">{data.taskName}</p>
-      {data.type === 'youtube' || data.type === 'article' ? (
-        <a 
-          href={data.taskDescription}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-blue-400 hover:text-blue-300 underline text-sm mb-6 break-words block"
-        >
-          {data.taskDescription}
-        </a>
-      ) : (
-        <p className="text-white text-sm mb-6 break-words">{data.taskDescription}</p>
-      )}
-      {data.type === 'youtube' && (
-        <div className="mb-4">
-          <iframe
-            width="100%"
-            height="120"
-            src={data.taskDescription.replace('watch?v=', 'embed/')}
-            title="YouTube video player"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          ></iframe>
-        </div>
-      )}
+      <a 
+        href={data.taskDescription}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-blue-400 hover:text-blue-300 underline text-sm mb-6 break-words block"
+      >
+        {data.taskDescription}
+      </a>
       <div className="footer absolute bottom-0 w-full left-0">
         <div className="tag w-full py-4 bg-blue-600 flex items-center justify-center text-white space-x-10">
-          <motion.button
-           whileTap={{ scale: 0.9, rotate: 4 }}
-           whileHover={{ scale: 1.5 }}
+          <button
             onClick={handleDoneClick}
             className="h-10 w-10 flex justify-center items-center"
           >
@@ -69,18 +43,17 @@ const Card = ({ data, onAdd, onDelete, onMarkDone, reference, highlight }) => {
             ) : (
               <IoIosDoneAll className="text-5xl text-white" />
             )}
-          </motion.button>
-          <motion.button
-          whileTap={{ scale: 10, rotate: 3 }}
+          </button>
+          <button
             onClick={() => onDelete(data._id)}
             className="h-10 w-10 flex justify-center items-center"
           >
-            {data.done ?(
-              <MdDeleteForever className="text-5xl text-red-500" />)
-              :(
-                <MdDeleteForever className="text-5xl text-white" />
-              )}
-          </motion.button>
+            {data.done ? (
+              <MdDeleteForever className="text-5xl text-red-500" />
+            ) : (
+              <MdDeleteForever className="text-5xl text-white" />
+            )}
+          </button>
         </div>
       </div>
     </motion.div>
