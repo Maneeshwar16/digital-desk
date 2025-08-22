@@ -1,9 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Card from './Card';
 import { motion } from "framer-motion";
 import { useAuth } from '../context/AuthContext';
 import { todoAPI } from '../services/api';
+import { FaTasks, FaRegFileAlt, FaYoutube, FaImage } from 'react-icons/fa';
 
 const Foreground = () => {
   const { user, logout } = useAuth();
@@ -12,10 +13,12 @@ const Foreground = () => {
   const [todoList, setTodoList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [newTask, setNewTask] = useState({ taskName: '', taskDescription: '' });
+  const [newTask, setNewTask] = useState({ type: 'task', taskName: '', taskDescription: '', content: '', imageUrl: '' });
+  const [addType, setAddType] = useState('task');
   const [showAddTask, setShowAddTask] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [taskToDelete, setTaskToDelete] = useState(null);
+  const [highlightType, setHighlightType] = useState(null);
   // Load todos on component mount
   useEffect(() => {
     if (!user) {
