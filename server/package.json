@@ -4,6 +4,9 @@
   "description": "Backend for Todo App",
   "main": "index.js",
   "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js"
@@ -15,9 +18,7 @@
     "dotenv": "^16.6.1",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.16.1",
-    "parse": "^6.1.1",
-    "parse-server": "^7.5.3"
+    "mongoose": "^8.16.1"
   },
   "devDependencies": {
     "nodemon": "^3.0.2"
