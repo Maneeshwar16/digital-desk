@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react'; // Removed unused useState import
 import { FaTasks } from 'react-icons/fa';
 import { IoCheckmarkDoneCircleSharp } from "react-icons/io5";
 import { IoIosAddCircle } from "react-icons/io";
@@ -14,7 +14,8 @@ const Card = ({ data, onAdd, onDelete, onMarkDone, reference, highlight }) => {
   return (
     <motion.div
       data-type={data.type}
-      initial={highlight ? { scale: 1.2, boxShadow: '0 0 0 4px #facc15' } : false}
+      // CORRECTED LINE: Replaced 'false' with a default animation object
+      initial={highlight ? { scale: 1.2, boxShadow: '0 0 0 4px #facc15' } : { scale: 1, boxShadow: '0 0 0 0px #facc15' }}
       animate={highlight ? { scale: [1.2, 1], boxShadow: ['0 0 0 4px #facc15', '0 0 0 0px #facc15'] } : {}}
       transition={highlight ? { duration: 0.6, ease: 'easeOut' } : { type: 'spring', stiffness: 400, damping: 20, duration: 0.15 }}
       whileHover={{ scale: 1.08 }}
@@ -36,25 +37,22 @@ const Card = ({ data, onAdd, onDelete, onMarkDone, reference, highlight }) => {
           href={data.taskDescription}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-blue-400 hover:text-blue-300 underline text-sm mb-6 break-words block"
+          className="text-blue-400 hover:text-blue-300 underline text-sm mb-6 block break-words cursor-pointer"
+          onClick={(e) => e.stopPropagation()}
         >
           {data.taskDescription}
         </a>
-      ) : (
-        <p className="text-white text-sm mb-6 break-words">{data.taskDescription}</p>
-      )}
-      {data.type === 'youtube' && (
-        <div className="mb-4">
-          <iframe
-            width="100%"
-            height="120"
-            src={data.taskDescription.replace('watch?v=', 'embed/')}
-            title="YouTube video player"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          ></iframe>
+      ) : data.type === 'image' ? (
+        <div className="mb-6">
+          <img 
+            src={data.taskDescription} 
+            alt={data.taskName}
+            className="w-full h-32 object-cover rounded-lg hover:opacity-90 transition-opacity"
+            onError={(e) => e.target.src = 'https://via.placeholder.com/150?text=Image+Error'}
+          />
         </div>
+      ) : (
+        <p className="text-white text-sm mb-6">{data.taskDescription}</p>
       )}
       <div className="footer absolute bottom-0 w-full left-0">
         <div className="tag w-full py-4 bg-blue-600 flex items-center justify-center text-white space-x-10">
@@ -71,7 +69,8 @@ const Card = ({ data, onAdd, onDelete, onMarkDone, reference, highlight }) => {
             )}
           </motion.button>
           <motion.button
-          whileTap={{ scale: 10, rotate: 3 }}
+          whileTap={{ scale: 1.5 }} // Changed scale to be more reasonable on tap
+          whileHover={{ scale: 1.5 }} // Added hover effect for consistency
             onClick={() => onDelete(data._id)}
             className="h-10 w-10 flex justify-center items-center"
           >
