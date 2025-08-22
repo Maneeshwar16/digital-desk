@@ -21,7 +21,6 @@ const Foreground = () => {
   const [taskToDelete, setTaskToDelete] = useState(null);
   const [highlightType, setHighlightType] = useState(null);
   
-  // MOVED FROM BELOW: These hooks are now at the top level.
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('all');
 
@@ -52,7 +51,6 @@ const Foreground = () => {
   useEffect(() => {
     if (location.state && location.state.focusType) {
       setHighlightType(location.state.focusType);
-      // Optionally, scroll to the first card of that type after render
       setTimeout(() => {
         const el = document.querySelector(`[data-type="${location.state.focusType}"]`);
         if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -158,7 +156,6 @@ const Foreground = () => {
       setShowDeleteConfirm(false);
     } else {
       try {
-        // For Parse Server, we need to use the objectId
         const taskObjectId = todoList.find(task => task._id === taskToDelete)?.objectId;
         if (taskObjectId) {
           await todoAPI.delete(taskObjectId);
@@ -219,9 +216,10 @@ const Foreground = () => {
   }
 
   const filteredTodos = todoList.filter(todo => {
-    const matchesSearch = todo.taskName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         todo.taskDescription.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesType = filterType === 'all' || todo.type === filterType;
+    const matchesSearch = (todo.taskName?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+                         (todo.taskDescription?.toLowerCase() || '').includes(searchTerm.toLowerCase());
+    // FIX IS HERE: Made the type comparison case-insensitive
+    const matchesType = filterType === 'all' || (todo.type?.toLowerCase() || '') === filterType;
     return matchesSearch && matchesType;
   });
 
@@ -230,7 +228,7 @@ const Foreground = () => {
       <div className="w-full flex justify-between items-center mb-6">
         <div>
           <h1 className="text-3xl text-white font-bold">
-            Hello, {user?.username?.split('@')[0]}! <br />Here is your digital desk
+            Hello, {user?.name}! <br />Here is your digital desk
           </h1>
           <div className="mt-4 flex items-center space-x-4">
             <input
