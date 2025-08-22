@@ -30,11 +30,31 @@ export const authAPI = {
 };
 
 export const todoAPI = {
-  getAll: () => api.get('/todos'),
-  create: (todoData) => api.post('/todos', todoData),
-  update: (id, todoData) => api.put(`/todos/${id}`, todoData),
-  delete: (id) => api.delete(`/todos/${id}`),
-  toggle: (id) => api.patch(`/todos/${id}/toggle`),
+  getAll: () => api.get('/todos', {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+  }),
+  create: (todoData) => api.post('/todos', todoData, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+  }),
+  update: (id, todoData) => api.put(`/todos/${id}`, todoData, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+  }),
+  delete: (id) => api.delete(`/todos/${id}`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+  }),
+  toggle: (id) => api.patch(`/todos/${id}/toggle`, {}, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+  }),
 };
 
 export default api;

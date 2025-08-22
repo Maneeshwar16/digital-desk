@@ -18,8 +18,8 @@ export const AuthProvider = ({ children }) => {
 
   // Check if user is logged in on app start
   useEffect(() => {
-    const sessionToken = localStorage.getItem('sessionToken');
-    if (sessionToken) {
+    const token = localStorage.getItem('token');
+    if (token) {
       checkAuthStatus();
     } else {
       setLoading(false);
@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }) => {
       const response = await authAPI.getProfile();
       setUser(response.data);
     } catch (error) {
-      localStorage.removeItem('sessionToken');
+      localStorage.removeItem('token');
     } finally {
       setLoading(false);
     }
@@ -41,13 +41,13 @@ export const AuthProvider = ({ children }) => {
     try {
       setError(null);
       const response = await authAPI.login({ username, password });
-      const { sessionToken, objectId, username: userName } = response.data;
+      const { token, user } = response.data;
       
-      localStorage.setItem('sessionToken', sessionToken);
-      setUser({ id: objectId, username: userName });
+      localStorage.setItem('token', token);
+      setUser(user);
       return { success: true };
     } catch (error) {
-      const message = error.response?.data?.error || 'Login failed';
+      const message = error.response?.data?.message || 'Login failed';
       setError(message);
       return { success: false, error: message };
     }
@@ -57,20 +57,20 @@ export const AuthProvider = ({ children }) => {
     try {
       setError(null);
       const response = await authAPI.register({ username, password });
-      const { sessionToken, objectId } = response.data;
+      const { token, user } = response.data;
       
-      localStorage.setItem('sessionToken', sessionToken);
-      setUser({ id: objectId, username });
+      localStorage.setItem('token', token);
+      setUser(user);
       return { success: true };
     } catch (error) {
-      const message = error.response?.data?.error || 'Registration failed';
+      const message = error.response?.data?.message || 'Registration failed';
       setError(message);
       return { success: false, error: message };
     }
   };
 
   const logout = () => {
-    localStorage.removeItem('sessionToken');
+    localStorage.removeItem('token');
     setUser(null);
     setError(null);
   };
