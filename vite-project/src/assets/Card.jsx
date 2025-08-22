@@ -6,6 +6,15 @@ import { MdDeleteForever } from "react-icons/md";
 import { IoIosDoneAll } from "react-icons/io";
 import { motion } from "framer-motion";
 
+const isValidUrl = (string) => {
+  try {
+    new URL(string);
+    return true;
+  } catch (_) {
+    return false;
+  }
+};
+
 const Card = ({ data, onAdd, onDelete, onMarkDone, reference, highlight }) => {
   const handleDoneClick = () => {
     onMarkDone(data._id);
@@ -37,17 +46,27 @@ const Card = ({ data, onAdd, onDelete, onMarkDone, reference, highlight }) => {
       </div>
       <p className="text-white text-xl font-bold mb-3">{data.taskName}</p>
       {data.type === 'youtube' || data.type === 'article' ? (
-        <a 
-          href={data.taskDescription}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-blue-400 hover:text-blue-300 underline text-sm mb-6 block break-words cursor-pointer"
-          onClick={(e) => e.stopPropagation()}
-        >
-          {data.taskDescription}
-        </a>
+        <>
+          <p className="text-white text-sm mb-2">{data.taskName}</p>
+          {isValidUrl(data.taskDescription) ? (
+            <a 
+              href={data.taskDescription}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-400 hover:text-blue-300 underline text-sm mb-6 block break-words cursor-pointer"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {data.taskDescription.length > 50 
+                ? data.taskDescription.substring(0, 50) + '...' 
+                : data.taskDescription}
+            </a>
+          ) : (
+            <p className="text-white text-sm mb-6">{data.taskDescription}</p>
+          )}
+        </>
       ) : data.type === 'image' ? (
         <div className="mb-6">
+          <p className="text-white text-sm mb-2">{data.taskName}</p>
           <img 
             src={data.taskDescription} 
             alt={data.taskName}
@@ -56,7 +75,10 @@ const Card = ({ data, onAdd, onDelete, onMarkDone, reference, highlight }) => {
           />
         </div>
       ) : (
-        <p className="text-white text-sm mb-6">{data.taskDescription}</p>
+        <>
+          <p className="text-white text-xl font-semibold mb-2">{data.taskName}</p>
+          <p className="text-white text-sm mb-6">{data.taskDescription}</p>
+        </>
       )}
       <div className="footer absolute bottom-0 w-full left-0">
         <div className="tag w-full py-4 bg-blue-600 flex items-center justify-center text-white space-x-10">

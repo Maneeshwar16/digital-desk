@@ -229,7 +229,7 @@ const Foreground = () => {
       <div className="w-full flex justify-between items-center mb-6">
         <div>
           <h1 className="text-3xl text-white font-bold">
-            Hello, {user?.username?.split('@')[0]}! <br />Here is your digital desk
+            Hello, {user?.username ? user.username.includes('@') ? user.username.split('@')[0] : user.username : 'Guest'}! <br />Here is your digital desk
           </h1>
           <div className="mt-4 flex items-center space-x-4">
             <input
