@@ -183,10 +183,10 @@ const Foreground = () => {
       try {
         const task = todoList.find(t => t._id === id);
         if (task) {
-          const response = await todoAPI.toggle(task.objectId, !task.done);
+          const response = await todoAPI.toggle(id);
           const updatedTask = {
             ...response.data,
-            _id: response.data.objectId,
+            _id: id,
             taskName: response.data.taskName || response.data.content,
             taskDescription: response.data.taskDescription || '',
           };
