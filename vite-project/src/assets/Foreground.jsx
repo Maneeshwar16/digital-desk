@@ -213,8 +213,7 @@ const Foreground = () => {
     <div ref={ref} className="fixed top-0 left-0 z-10 w-full h-full p-20 flex flex-wrap gap-5 mt-4 overflow-y-auto">
       <div className="w-full flex justify-between items-center mb-6">
         <h1 className="text-3xl text-white font-bold">
-          Hello, {user?.username?.split('@')[0] || 'Guest'}! <br />
-          <span className="text-2xl text-gray-300">Here is your digital desk</span>
+          Digital Desk
         </h1>
         <button
           onClick={handleLogout}
