@@ -48,9 +48,9 @@ const Card = ({ data, onAdd, onDelete, onMarkDone, reference, highlight }) => {
       {data.type === 'youtube' || data.type === 'article' ? (
         <>
           <p className="text-white text-sm mb-2">{data.taskName}</p>
-          {isValidUrl(data.taskDescription) ? (
+          {data.taskDescription && data.taskDescription.match(/^(https?:\/\/|www\.)/i) ? (
             <a 
-              href={data.taskDescription}
+              href={data.taskDescription.startsWith('http') ? data.taskDescription : `https://${data.taskDescription}`}
               target="_blank"
               rel="noopener noreferrer"
               className="text-blue-400 hover:text-blue-300 underline text-sm mb-6 block break-words cursor-pointer"
