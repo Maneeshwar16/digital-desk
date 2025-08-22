@@ -98,14 +98,31 @@ const Foreground = () => {
       alert('Please provide the image URL!');
       return;
     }
-    const payload = { type: addType };
+    let payload;
     if (addType === 'task') {
-      payload.taskName = newTask.taskName;
-      payload.taskDescription = newTask.taskDescription;
-    } else if (addType === 'article' || addType === 'youtube') {
-      payload.content = newTask.content;
+      payload = {
+        taskName: newTask.taskName,
+        taskDescription: newTask.taskDescription,
+        type: 'task'
+      };
+    } else if (addType === 'article') {
+      payload = {
+        taskName: 'Article',
+        taskDescription: newTask.content,
+        type: 'article'
+      };
+    } else if (addType === 'youtube') {
+      payload = {
+        taskName: 'YouTube Video',
+        taskDescription: newTask.content,
+        type: 'youtube'
+      };
     } else if (addType === 'image') {
-      payload.imageUrl = newTask.imageUrl;
+      payload = {
+        taskName: 'Image',
+        taskDescription: newTask.imageUrl,
+        type: 'image'
+      };
     }
     if (user && user.guest) {
       const newTodo = { ...payload, _id: Date.now().toString(), done: false };

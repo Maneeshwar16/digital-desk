@@ -18,15 +18,23 @@ router.get('/', auth, async (req, res) => {
 // Create a new todo
 router.post('/', auth, async (req, res) => {
   try {
-    const { taskName, taskDescription } = req.body;
+    const { type, taskName, taskDescription, content, imageUrl } = req.body;
+
+    // Validate required fields based on type
+    if (!type) {
+      return res.status(400).json({ message: 'Type is required' });
+    }
 
     if (!taskName || !taskDescription) {
       return res.status(400).json({ message: 'Task name and description are required' });
     }
 
     const todo = new Todo({
+      type,
       taskName,
       taskDescription,
+      content,
+      imageUrl,
       user: req.user._id
     });
 
