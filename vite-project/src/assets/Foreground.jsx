@@ -1,26 +1,21 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Card from './Card';
 import { motion } from "framer-motion";
 import { useAuth } from '../context/AuthContext';
 import { todoAPI } from '../services/api';
-import { FaTasks, FaRegFileAlt, FaYoutube, FaImage } from 'react-icons/fa';
 
 const Foreground = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-  const location = useLocation();
   const ref = useRef(null);
   const [todoList, setTodoList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [newTask, setNewTask] = useState({ type: 'task', taskName: '', taskDescription: '', content: '', imageUrl: '' });
-  const [addType, setAddType] = useState('task');
+  const [newTask, setNewTask] = useState({ taskName: '', taskDescription: '' });
   const [showAddTask, setShowAddTask] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [taskToDelete, setTaskToDelete] = useState(null);
-  const [highlightType, setHighlightType] = useState(null);
-
   // Load todos on component mount
   useEffect(() => {
     if (!user) {
@@ -244,47 +239,12 @@ const Foreground = () => {
         </div>
       )}
       
-      <div className="w-full flex gap-4 mb-6">
-        <button
-          onClick={() => setHighlightType(null)}
-          className={`px-4 py-2 rounded ${!highlightType ? 'bg-blue-600' : 'bg-gray-700'} text-white transition-colors duration-200`}
-        >
-          All
-        </button>
-        <button
-          onClick={() => setHighlightType('task')}
-          className={`px-4 py-2 rounded ${highlightType === 'task' ? 'bg-blue-600' : 'bg-gray-700'} text-white transition-colors duration-200`}
-        >
-          Tasks
-        </button>
-        <button
-          onClick={() => setHighlightType('article')}
-          className={`px-4 py-2 rounded ${highlightType === 'article' ? 'bg-blue-600' : 'bg-gray-700'} text-white transition-colors duration-200`}
-        >
-          Articles
-        </button>
-        <button
-          onClick={() => setHighlightType('youtube')}
-          className={`px-4 py-2 rounded ${highlightType === 'youtube' ? 'bg-blue-600' : 'bg-gray-700'} text-white transition-colors duration-200`}
-        >
-          YouTube
-        </button>
-        <button
-          onClick={() => setHighlightType('image')}
-          className={`px-4 py-2 rounded ${highlightType === 'image' ? 'bg-blue-600' : 'bg-gray-700'} text-white transition-colors duration-200`}
-        >
-          Images
-        </button>
-      </div>
-
       {todoList.length === 0 ? (
         <div className="w-full text-center text-white text-xl">
           No items yet. Click the + button to add your first item!
         </div>
       ) : (
-        todoList
-          .filter(item => !highlightType || item.type === highlightType)
-          .map((item) => (
+        todoList.map((item) => (
           <Card
             key={item._id}
             data={item}
