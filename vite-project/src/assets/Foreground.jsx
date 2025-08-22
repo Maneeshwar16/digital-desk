@@ -60,12 +60,12 @@ const Foreground = () => {
     try {
       setLoading(true);
       const response = await todoAPI.getAll();
-      setTodoList(response.data.results.map(todo => ({
-        ...todo,
-        _id: todo.objectId,
-        taskName: todo.taskName || todo.content,
-        taskDescription: todo.taskDescription || '',
-      })));
+      if (Array.isArray(response.data)) {
+        setTodoList(response.data);
+      } else {
+        console.error('Unexpected response format:', response.data);
+        setError('Failed to load todos - unexpected data format');
+      }
     } catch (error) {
       setError('Failed to load todos');
       console.error('Error fetching todos:', error);
@@ -114,18 +114,8 @@ const Foreground = () => {
       setShowAddTask(false);
     } else {
       try {
-        const response = await todoAPI.create({
-          ...payload,
-          userId: user.id,
-          done: false
-        });
-        const newTodo = {
-          ...response.data,
-          _id: response.data.objectId,
-          taskName: response.data.taskName || response.data.content,
-          taskDescription: response.data.taskDescription || '',
-        };
-        setTodoList([newTodo, ...todoList]);
+        const response = await todoAPI.create(payload);
+        setTodoList([response.data, ...todoList]);
         setNewTask({ type: 'task', taskName: '', taskDescription: '', content: '', imageUrl: '' });
         setShowAddTask(false);
       } catch (error) {
