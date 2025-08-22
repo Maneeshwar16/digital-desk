@@ -20,6 +20,10 @@ const Foreground = () => {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [taskToDelete, setTaskToDelete] = useState(null);
   const [highlightType, setHighlightType] = useState(null);
+  
+  // MOVED FROM BELOW: These hooks are now at the top level.
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterType, setFilterType] = useState('all');
 
   // Load todos on component mount
   useEffect(() => {
@@ -214,9 +218,6 @@ const Foreground = () => {
     );
   }
 
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filterType, setFilterType] = useState('all');
-
   const filteredTodos = todoList.filter(todo => {
     const matchesSearch = todo.taskName.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          todo.taskDescription.toLowerCase().includes(searchTerm.toLowerCase());
@@ -229,7 +230,7 @@ const Foreground = () => {
       <div className="w-full flex justify-between items-center mb-6">
         <div>
           <h1 className="text-3xl text-white font-bold">
-            Hello, {user?.username ? user.username.includes('@') ? user.username.split('@')[0] : user.username : 'Guest'}! <br />Here is your digital desk
+            Hello, {user?.username?.split('@')[0]}! <br />Here is your digital desk
           </h1>
           <div className="mt-4 flex items-center space-x-4">
             <input
