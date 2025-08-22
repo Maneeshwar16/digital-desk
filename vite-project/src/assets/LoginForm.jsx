@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import DisplayName from './DisplayName';
 
 const LoginForm = ({ onSubmit, error: externalError, loading }) => {
   const [username, setUsername] = useState('');
@@ -29,11 +28,7 @@ const LoginForm = ({ onSubmit, error: externalError, loading }) => {
       onSubmit={handleSubmit}
       autoComplete="off"
     >
-      {username ? (
-        <DisplayName username={username} />
-      ) : (
-        <h2 className="text-2xl font-bold mb-2 text-center text-white">Login</h2>
-      )}
+      <h2 className="text-2xl font-bold mb-2 text-center">Login</h2>
       {/* Username Field */}
       <div className="flex flex-col gap-1 relative">
         <label htmlFor="username" className="font-medium">Username or Email</label>

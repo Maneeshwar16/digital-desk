@@ -14,28 +14,20 @@ const Card = ({ data, onAdd, onDelete, onMarkDone, reference, highlight }) => {
   return (
     <motion.div
       data-type={data.type}
-      initial={highlight ? { scale: 1.2, boxShadow: '0 0 0 4px #facc15' } : false}
-      animate={highlight ? { scale: [1.2, 1], boxShadow: ['0 0 0 4px #facc15', '0 0 0 0px #facc15'] } : {}}
-      transition={highlight ? { duration: 0.6, ease: 'easeOut' } : { type: 'spring', stiffness: 400, damping: 20, duration: 0.15 }}
+      initial={highlight ? { scale: 1.2, boxShadow: '0 0 0 4px #facc15' } : { scale: 1 }}
+      animate={highlight ? { scale: [1.2, 1], boxShadow: ['0 0 0 4px #facc15', '0 0 0 0px #facc15'] } : { scale: 1 }}
       whileHover={{ 
-        scale: 1.05,
-        rotate: [-1, 1, -1],
+        scale: 1.1,
         transition: {
-          rotate: {
-            repeat: Infinity,
-            duration: 0.3,
-          },
-          scale: {
-            type: "spring",
-            stiffness: 400,
-            damping: 10
-          }
+          type: "spring",
+          stiffness: 300,
+          damping: 15
         }
       }}
       whileTap={{ scale: 0.95 }}
       drag
       dragConstraints={reference}
-      className={`relative w-60 h-80 bg-zinc-900 rounded-[10%] px-5 py-10 overflow-hidden justify-center text-white mt-24 opacity-80 ${highlight ? 'ring-4 ring-yellow-400' : ''}`}
+      className={`relative w-60 h-80 bg-zinc-900 rounded-[10%] px-5 py-10 overflow-hidden justify-center text-white mt-24 opacity-80 hover:shadow-lg hover:opacity-100 transition-opacity ${highlight ? 'ring-4 ring-yellow-400' : ''}`}
     >
       <div className="flex justify-between items-center mb-4">
         <FaTasks className="text-[25px]" />
