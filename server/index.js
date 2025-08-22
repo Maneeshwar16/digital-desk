@@ -14,7 +14,8 @@ const PORT = process.env.PORT || 5000;
 // ✅ Correct allowed frontend origins (PROD + DEV)
 const allowedOrigins = [
   'https://digital-desk.vercel.app', // ✅ your deployed frontend
-  'http://localhost:5173'            // ✅ local dev
+  'http://localhost:5173',           // ✅ local dev
+  'https://digital-desk-production.up.railway.app' // ✅ Railway URL
 ];
 
 // ✅ CORS setup
