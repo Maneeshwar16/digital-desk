@@ -24,41 +24,17 @@ api.interceptors.request.use(
 );
 
 export const authAPI = {
-  register: (userData) => api.post('/users', userData),
-  login: (userData) => api.post('/login', userData),
-  getProfile: () => api.get('/users/me', {
-    headers: {
-      'X-Parse-Session-Token': localStorage.getItem('sessionToken'),
-    },
-  }),
+  register: (userData) => api.post('/users/register', userData),
+  login: (userData) => api.post('/users/login', userData),
+  getProfile: () => api.get('/users/profile'),
 };
 
 export const todoAPI = {
-  getAll: () => api.get('/classes/Todo', {
-    headers: {
-      'X-Parse-Session-Token': localStorage.getItem('sessionToken'),
-    },
-  }),
-  create: (todoData) => api.post('/classes/Todo', todoData, {
-    headers: {
-      'X-Parse-Session-Token': localStorage.getItem('sessionToken'),
-    },
-  }),
-  update: (id, todoData) => api.put(`/classes/Todo/${id}`, todoData, {
-    headers: {
-      'X-Parse-Session-Token': localStorage.getItem('sessionToken'),
-    },
-  }),
-  delete: (id) => api.delete(`/classes/Todo/${id}`, {
-    headers: {
-      'X-Parse-Session-Token': localStorage.getItem('sessionToken'),
-    },
-  }),
-  toggle: (id, isDone) => api.put(`/classes/Todo/${id}`, { isDone }, {
-    headers: {
-      'X-Parse-Session-Token': localStorage.getItem('sessionToken'),
-    },
-  }),
+  getAll: () => api.get('/todos'),
+  create: (todoData) => api.post('/todos', todoData),
+  update: (id, todoData) => api.put(`/todos/${id}`, todoData),
+  delete: (id) => api.delete(`/todos/${id}`),
+  toggle: (id) => api.patch(`/todos/${id}/toggle`),
 };
 
 export default api;
