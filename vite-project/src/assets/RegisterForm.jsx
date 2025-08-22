@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import DisplayName from './DisplayName';
 
 const passwordChecks = [
   {
@@ -60,7 +59,6 @@ const RegisterForm = ({ onSubmit }) => {
 
   return (
     <div className="max-w-md mx-auto mt-10">
-      <DisplayName username={name} />
       <form 
         className="bg-gray-900 rounded-b-lg shadow-lg p-8 flex flex-col gap-6"
         onSubmit={handleSubmit}
@@ -80,7 +78,9 @@ const RegisterForm = ({ onSubmit }) => {
             onBlur={() => setTouched((t) => ({ ...t, name: true }))}
           />
           {touched.name && !name && (
-            <span className="text-xs text-red-500 absolute left-0 top-full mt-1">Please enter your name</span>
+            <span className="text-xs text-red-500 absolute left-0 top-full mt-1">
+              Please enter your name
+            </span>
           )}
         </div>
 
@@ -98,7 +98,9 @@ const RegisterForm = ({ onSubmit }) => {
             onBlur={() => setTouched((t) => ({ ...t, email: true }))}
           />
           {touched.email && !emailValid && (
-            <span className="text-xs text-red-500 absolute left-0 top-full mt-1">Enter a valid email address</span>
+            <span className="text-xs text-red-500 absolute left-0 top-full mt-1">
+              Enter a valid email address
+            </span>
           )}
         </div>
 
@@ -157,7 +159,9 @@ const RegisterForm = ({ onSubmit }) => {
 
         {/* Error Message */}
         {error && (
-          <div className="bg-red-100 text-red-700 px-3 py-2 rounded text-sm text-center">{error}</div>
+          <div className="bg-red-100 text-red-700 px-3 py-2 rounded text-sm text-center">
+            {error}
+          </div>
         )}
 
         <button
