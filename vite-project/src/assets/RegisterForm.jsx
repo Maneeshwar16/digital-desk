@@ -1,8 +1,14 @@
 import React, { useState } from 'react';
+import DisplayName from './DisplayName';
 
 const passwordChecks = [
   {
-    label: 'At least 6 characters',
+    label: 'At least 6 chara      </form>
+    </div>
+  );
+};
+
+export default RegisterForm;',
     test: (pw) => pw.length >= 6,
   },
   {
@@ -28,27 +34,28 @@ function getPasswordStrength(pw) {
 }
 
 const RegisterForm = ({ onSubmit }) => {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [touched, setTouched] = useState({ email: false, password: false });
+  const [touched, setTouched] = useState({ name: false, email: false, password: false });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
+  const nameValid = name.trim().length > 0;
   const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   const passwordResults = passwordChecks.map((c) => c.test(password));
   const allPasswordValid = passwordResults.every(Boolean);
-  const canSubmit = emailValid && allPasswordValid && !loading;
+  const canSubmit = nameValid && emailValid && allPasswordValid && !loading;
   const strength = getPasswordStrength(password);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setTouched({ email: true, password: true });
+    setTouched({ name: true, email: true, password: true });
     if (!canSubmit) return;
     setLoading(true);
     setError('');
     try {
-      // Replace with your registration API call
-      await onSubmit?.({ email, password });
+      await onSubmit?.({ name, email, password });
     } catch (err) {
       setError(err.message || 'Registration failed');
     } finally {
@@ -57,13 +64,31 @@ const RegisterForm = ({ onSubmit }) => {
   };
 
   return (
-    <form
-      className="max-w-md mx-auto mt-10 bg-gray-900 rounded-lg shadow-lg p-8 flex flex-col gap-6"
-      onSubmit={handleSubmit}
-      autoComplete="off"
-    >
-      <h2 className="text-2xl font-bold mb-2 text-center">Register</h2>
-      {/* Email Field */}
+    <div className="max-w-md mx-auto mt-10">
+      <DisplayName username={name} />
+      <form 
+        className="bg-gray-900 rounded-b-lg shadow-lg p-8 flex flex-col gap-6"
+        onSubmit={handleSubmit}
+        autoComplete="off"
+      >
+        {/* Name Field */}
+        <div className="flex flex-col gap-1 relative bg-gray-900">
+          <label htmlFor="name" className="font-medium">Name</label>
+          <input
+            id="name"
+            type="text"
+            className={`bg-gray-800 text-white border rounded px-3 py-2 focus:outline-none transition-colors ${
+              touched.name && !name ? 'border-red-500' : 'border-gray-300'
+            }`}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            onBlur={() => setTouched((t) => ({ ...t, name: true }))}
+          />
+          {touched.name && !name && (
+            <span className="text-xs text-red-500 absolute left-0 top-full mt-1">Please enter your name</span>
+          )}
+        </div>
+        {/* Email Field */}
       <div className="flex flex-col gap-1 relative bg-gray-900">
         <label htmlFor="email" className="font-medium">Email</label>
         <input
@@ -127,4 +152,4 @@ const RegisterForm = ({ onSubmit }) => {
   );
 };
 
-export default RegisterForm; 
+export default RegisterForm;

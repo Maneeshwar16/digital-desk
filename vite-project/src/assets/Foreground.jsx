@@ -9,6 +9,7 @@ import { FaTasks, FaRegFileAlt, FaYoutube, FaImage } from 'react-icons/fa';
 const Foreground = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const ref = useRef(null);
   const [todoList, setTodoList] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -19,6 +20,7 @@ const Foreground = () => {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [taskToDelete, setTaskToDelete] = useState(null);
   const [highlightType, setHighlightType] = useState(null);
+
   // Load todos on component mount
   useEffect(() => {
     if (!user) {
@@ -212,15 +214,47 @@ const Foreground = () => {
     );
   }
 
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterType, setFilterType] = useState('all');
+
+  const filteredTodos = todoList.filter(todo => {
+    const matchesSearch = todo.taskName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         todo.taskDescription.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesType = filterType === 'all' || todo.type === filterType;
+    return matchesSearch && matchesType;
+  });
+
   return (
-    <div ref={ref} className="fixed top-0 left-0 z-10 w-full h-full p-20 flex flex-wrap gap-5 mt-4 overflow-y-auto">
+    <div ref={ref} className="fixed top-0 left-0 z-10 w-full h-full p-20 flex flex-wrap gap-5 mt-4 flex space-x-4 overflow-y-auto">
       <div className="w-full flex justify-between items-center mb-6">
-        <h1 className="text-3xl text-white font-bold">
-          Digital Desk
-        </h1>
+        <div>
+          <h1 className="text-3xl text-white font-bold">
+            Hello, {user?.username?.split('@')[0]}! <br />Here is your digital desk
+          </h1>
+          <div className="mt-4 flex items-center space-x-4">
+            <input
+              type="text"
+              placeholder="Search tasks..."
+              className="px-4 py-2 bg-zinc-800 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <select
+              className="px-4 py-2 bg-zinc-800 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={filterType}
+              onChange={(e) => setFilterType(e.target.value)}
+            >
+              <option value="all">All Items</option>
+              <option value="task">Tasks</option>
+              <option value="article">Articles</option>
+              <option value="youtube">YouTube</option>
+              <option value="image">Images</option>
+            </select>
+          </div>
+        </div>
         <button
           onClick={handleLogout}
-          className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded text-white font-semibold"
+          className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded text-white font-semibold h-10"
         >
           Logout
         </button>
@@ -245,8 +279,12 @@ const Foreground = () => {
         <div className="w-full text-center text-white text-xl">
           No items yet. Click the + button to add your first item!
         </div>
+      ) : filteredTodos.length === 0 ? (
+        <div className="w-full text-center text-white text-xl">
+          No matching items found.
+        </div>
       ) : (
-        todoList.map((item) => (
+        filteredTodos.map((item) => (
           <Card
             key={item._id}
             data={item}

@@ -44,11 +44,7 @@ const Login = () => {
   // Guest login
   const handleGuestLogin = () => {
     setUser({ username: 'Guest', guest: true });
-    if (location.state && location.state.redirectTo) {
-      navigate(location.state.redirectTo, { state: { guest: true, focusType: location.state.focusType } });
-    } else {
-      navigate('/foreground');
-    }
+    navigate('/foreground');
   };
 
   return (
@@ -67,23 +63,23 @@ const Login = () => {
           ) : (
             <RegisterForm onSubmit={handleRegister} error={error} loading={loading} />
           )}
-          {/* Login as Guest Button */}
+          {/* Continue as Guest Button */}
           <button
             onClick={handleGuestLogin}
             className="w-full mt-2 mb-2 bg-gray-600 hover:bg-gray-700 text-white py-2 rounded font-semibold transition-colors"
-            disabled={loading}
           >
-            Login as Guest
+            Continue as Guest
           </button>
-          <div className="text-center">
-            <button
-              onClick={() => setIsLogin(!isLogin)}
-              className="text-blue-400 hover:text-blue-300 text-sm"
-              disabled={loading}
-            >
-              {isLogin ? "Don't have an account? Register" : "Already have an account? Login"}
-            </button>
-          </div>
+          {!loading && (
+            <div className="text-center">
+              <button
+                onClick={() => setIsLogin(!isLogin)}
+                className="text-blue-400 hover:text-blue-300 text-sm"
+              >
+                {isLogin ? "Don't have an account? Register" : "Already have an account? Login"}
+              </button>
+            </div>
+          )}
         </motion.div>
       </motion.div>
     </motion.div>
