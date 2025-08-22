@@ -2,16 +2,14 @@
 
 import axios from 'axios';
 
-const API_BASE_URL = 'https://parseapi.back4app.com';
+const API_BASE_URL = process.env.VITE_API_URL || 'http://localhost:5000/api';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
-    'X-Parse-Application-Id': 'KRQaCthAl6XnYohTyMo0n0UN9p1PSMlAXFTaeiY5',
-    'X-Parse-Client-Key': 'gAR6PS3FwuIIQaazU4ZpEh21KLbjuX3Xz86DNMGN',
     'Content-Type': 'application/json',
   },
-  withCredentials: false, // Changed to false for Parse Server
+  withCredentials: true,
 });
 
 api.interceptors.request.use(
